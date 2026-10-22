@@ -5,8 +5,12 @@ export async function onRequestPost(context) {
     const body = await request.json();
     const amount = Number(body.amount);
 
-    // Allowed challenge amounts in paise
-    const allowedAmounts = [499900, 999900, 1499900, 2499900];
+    const allowedAmounts = [
+      499900,
+      999900,
+      1499900,
+      2499900
+    ];
 
     if (!allowedAmounts.includes(amount)) {
       return Response.json(
@@ -15,21 +19,21 @@ export async function onRequestPost(context) {
       );
     }
 
-    // Check Razorpay configuration
-    if (!env.RAZORPAY_KEY_ID || !env.RAZORPAY_KEY_SECRET) {
+    if (
+      !env.RAZORPAY_KEY_ID ||
+      !env.RAZORPAY_KEY_SECRET
+    ) {
       return Response.json(
         { error: "Payment configuration missing" },
         { status: 500 }
       );
     }
 
-    // Create Razorpay authentication credentials
     const credentials = btoa(
       env.RAZORPAY_KEY_ID + ":" + env.RAZORPAY_KEY_SECRET
     );
 
-    // Create Razorpay order
-    const response = await fetch(
+    const razorpayResponse = await fetch(
       "https://api.razorpay.com/v1/orders",
       {
         method: "POST",
@@ -45,10 +49,10 @@ export async function onRequestPost(context) {
       }
     );
 
-    const data = await response.json();
+    const result = await razorpayResponse.json();
 
-    return Response.json(data, {
-      status: response.status
+    return Response.json(result, {
+      status: razorpayResponse.status
     });
 
   } catch (error) {
@@ -57,3 +61,4 @@ export async function onRequestPost(context) {
       { status: 500 }
     );
   }
+}
