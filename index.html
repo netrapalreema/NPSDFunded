@@ -354,10 +354,48 @@ footer{text-align:center;padding:25px;background:#111a30;color:#aab7ca}
   ">Logout</button>
 </div>
   onAuthStateChanged(auth, user => {
-    if (user) {
-      console.log("Logged in:", user.email);
-    }
-  });
+  const dashboard = document.getElementById("trader-dashboard");
+  const emailDisplay = document.getElementById("trader-email");
+  const modal = document.getElementById("auth-modal");
+
+  if (user) {
+    dashboard.style.display = "block";
+    modal.style.display = "none";
+    emailDisplay.textContent = user.email || "";
+  } else {
+    dashboard.style.display = "none";
+  }
+});
+
+document.getElementById("trader-logout").onclick = async () => {
+  try {
+    await signOut(auth);
+    document.getElementById("auth-modal").style.display = "none";
+    openAuth(false);
+  } catch (error) {
+    alert("Logout nahi ho paya. Dobara koshish karein.");
+  }
+};
+
+document.getElementById("select-challenge").onclick = () => {
+  const plan = document.getElementById("challenge-plan");
+  const amount = Number(plan.value);
+  const fundedAmounts = {
+    4999: 500000,
+    9999: 1000000,
+    14999: 1500000,
+    24999: 2500000
+  };
+
+  document.getElementById("challenge-status").textContent =
+    "Selected — ₹" + amount.toLocaleString("en-IN");
+
+  document.getElementById("challenge-message").textContent =
+    "Selected plan: ₹" + amount.toLocaleString("en-IN") +
+    " | Account target: ₹" +
+    fundedAmounts[amount].toLocaleString("en-IN") +
+    ". Payment and account activation are not yet connected.";
+};
 
   window.npsdLogout = () => signOut(auth);
 </script>
