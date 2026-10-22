@@ -8,38 +8,43 @@
 <style>
 *{box-sizing:border-box}
 body{margin:0;font-family:Arial,sans-serif;background:#0b1020;color:#fff}
-header{padding:22px 8%;display:flex;justify-content:space-between;align-items:center;background:#111a30}
+header{padding:22px 8%;display:flex;justify-content:space-between;align-items:center;background:#111a30;flex-wrap:wrap;gap:12px}
 .logo{font-size:26px;font-weight:bold;color:#42e8b4}
-nav a{color:#fff;text-decoration:none;margin-left:20px}
+nav a{color:#fff;text-decoration:none;margin-left:15px}
 .hero{text-align:center;padding:75px 20px;background:linear-gradient(135deg,#111a30,#183b4b)}
 .hero h1{font-size:44px;margin:0 0 15px}
 .hero h1 span{color:#42e8b4}
 .hero p{color:#cbd5e1;font-size:18px}
-.btn{display:inline-block;padding:13px 24px;margin-top:15px;background:#42e8b4;color:#07111c;text-decoration:none;border-radius:7px;font-weight:bold;border:0;cursor:pointer}
-section{padding:55px 7%}
-h2{text-align:center;font-size:32px}
+.btn{display:inline-block;padding:13px 20px;margin:6px;background:#42e8b4;color:#07111c;text-decoration:none;border-radius:7px;font-weight:bold;border:0;cursor:pointer}
+section{padding:45px 7%}
+h2{text-align:center;font-size:30px}
 .plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;margin-top:35px}
-.card{background:#151f35;border:1px solid #2b3a52;border-radius:12px;padding:25px;text-align:center}
+.card,.rule,.panel-card{background:#151f35;border:1px solid #2b3a52;border-radius:12px;padding:22px;text-align:center}
 .card h3{color:#42e8b4}
 .price{font-size:28px;font-weight:bold}
 .account{color:#b8c6d9}
 .card ul{padding:0;list-style:none;line-height:2;color:#dbe5f1}
 .rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:18px}
-.rule{background:#151f35;padding:25px;text-align:center;border-radius:10px}
 .rule strong{display:block;font-size:32px;color:#42e8b4}
 .market{text-align:center;color:#dbe5f1;line-height:2}
 footer{text-align:center;padding:25px;background:#111a30;color:#aab7ca}
 .small{font-size:12px;color:#aab7ca}
-
-#auth-modal input,#challenge-plan{font-size:16px}
-#auth-modal button,#trader-dashboard button{cursor:pointer}
+input,select{font-size:16px;padding:12px;border-radius:6px;border:1px solid #bbb}
+button:disabled{opacity:.6}
 #auth-message{overflow-wrap:anywhere}
-
+.overlay{display:none;position:fixed;inset:0;z-index:99990;background:#0b1220;color:white;padding:22px;overflow:auto}
+.admin-table-wrap{overflow-x:auto;margin-top:20px}
+table{width:100%;border-collapse:collapse;min-width:700px;background:#111a30}
+th,td{padding:12px;border:1px solid #334155;text-align:left}
+th{background:#1e3049;color:#42e8b4}
+td select{max-width:150px;width:100%}
+.status-note{color:#cbd5e1;overflow-wrap:anywhere}
 @media(max-width:600px){
  .hero h1{font-size:34px}
- header{padding:18px;flex-wrap:wrap}
- nav{margin-top:12px}
- nav a{margin-right:12px;margin-left:0}
+ header{padding:18px}
+ nav{width:100%}
+ nav a{margin:0 12px 0 0}
+ section{padding:35px 5%}
 }
 </style>
 </head>
@@ -68,16 +73,11 @@ footer{text-align:center;padding:25px;background:#111a30;color:#aab7ca}
   </p>
 
   <div class="plans">
-
     <div class="card">
       <h3>Starter</h3>
       <div class="price">₹4,999</div>
       <p class="account">₹5,00,000 Account</p>
-      <ul>
-        <li>Profit Target: 15%</li>
-        <li>Max Drawdown: 6%</li>
-        <li>Daily Drawdown: 3%</li>
-      </ul>
+      <ul><li>Profit Target: 15%</li><li>Max Drawdown: 6%</li><li>Daily Drawdown: 3%</li></ul>
       <button class="btn" onclick="window.npsdOpenAuth(true,4999)">Select Plan</button>
     </div>
 
@@ -85,11 +85,7 @@ footer{text-align:center;padding:25px;background:#111a30;color:#aab7ca}
       <h3>Growth</h3>
       <div class="price">₹9,999</div>
       <p class="account">₹10,00,000 Account</p>
-      <ul>
-        <li>Profit Target: 15%</li>
-        <li>Max Drawdown: 6%</li>
-        <li>Daily Drawdown: 3%</li>
-      </ul>
+      <ul><li>Profit Target: 15%</li><li>Max Drawdown: 6%</li><li>Daily Drawdown: 3%</li></ul>
       <button class="btn" onclick="window.npsdOpenAuth(true,9999)">Select Plan</button>
     </div>
 
@@ -97,11 +93,7 @@ footer{text-align:center;padding:25px;background:#111a30;color:#aab7ca}
       <h3>Pro</h3>
       <div class="price">₹14,999</div>
       <p class="account">₹15,00,000 Account</p>
-      <ul>
-        <li>Profit Target: 15%</li>
-        <li>Max Drawdown: 6%</li>
-        <li>Daily Drawdown: 3%</li>
-      </ul>
+      <ul><li>Profit Target: 15%</li><li>Max Drawdown: 6%</li><li>Daily Drawdown: 3%</li></ul>
       <button class="btn" onclick="window.npsdOpenAuth(true,14999)">Select Plan</button>
     </div>
 
@@ -109,14 +101,9 @@ footer{text-align:center;padding:25px;background:#111a30;color:#aab7ca}
       <h3>Elite</h3>
       <div class="price">₹24,999</div>
       <p class="account">₹25,00,000 Account</p>
-      <ul>
-        <li>Profit Target: 15%</li>
-        <li>Max Drawdown: 6%</li>
-        <li>Daily Drawdown: 3%</li>
-      </ul>
+      <ul><li>Profit Target: 15%</li><li>Max Drawdown: 6%</li><li>Daily Drawdown: 3%</li></ul>
       <button class="btn" onclick="window.npsdOpenAuth(true,24999)">Select Plan</button>
     </div>
-
   </div>
 </section>
 
@@ -136,125 +123,94 @@ footer{text-align:center;padding:25px;background:#111a30;color:#aab7ca}
     <p>Equity Shares · Futures · Options (F&O)</p>
     <h3>Global Markets</h3>
     <p>Forex · Indices · Commodities · Crypto</p>
-    <p class="small">
-      Actual market availability depends on the final trading platform
-      and applicable rules.
-    </p>
+    <p class="small">Actual market availability depends on the final platform and applicable rules.</p>
   </div>
 </section>
 
-<section id="contact">
-  <h2>Start Your Journey</h2>
-  <p style="text-align:center;color:#aab7ca">
-    Interested in a challenge? Create an account to get started.
-  </p>
+<section style="text-align:center">
+  <h2>Trader Account</h2>
+  <p>Create an account or log in to continue.</p>
+  <button class="btn" onclick="window.npsdOpenAuth(false)">Login</button>
+  <button class="btn" onclick="window.npsdOpenAuth(true)" style="background:#16a34a">Register</button>
 </section>
 
 <footer>
   <p>© 2026 NPSDFunded. All rights reserved.</p>
-  <p class="small">
-    Challenge plans are subject to final terms and conditions.
-    No guaranteed profits.
-  </p>
+  <p class="small">Challenge plans are subject to final terms and conditions. No guaranteed profits.</p>
 </footer>
 
-<!-- Login and Register Buttons -->
-<section id="trader-account" style="text-align:center;padding:30px">
-  <h2>Trader Account</h2>
-  <p>Join NPSDFunded and start your trading challenge.</p>
-
-  <button class="btn"
-    onclick="window.npsdOpenAuth(false)">Login</button>
-
-  <button class="btn"
-    style="background:#16a34a"
-    onclick="window.npsdOpenAuth(true)">Register</button>
-</section>
-
-<!-- Trader Dashboard: HTML must remain OUTSIDE the script -->
-<div id="trader-dashboard" style="
-  display:none;position:fixed;inset:0;z-index:99990;
-  background:#0b1220;color:white;padding:24px;overflow:auto;
-  font-family:Arial,sans-serif">
-
+<!-- Trader dashboard -->
+<div id="trader-dashboard" class="overlay">
   <h1>NPSDFunded</h1>
   <h2>Trader Dashboard</h2>
   <p>Welcome, <span id="trader-email"></span></p>
 
-  <div style="background:#172338;padding:20px;border-radius:12px;margin:15px 0">
+  <div class="panel-card">
     <h3>Choose Your Challenge</h3>
-
-    <select id="challenge-plan" style="width:100%;padding:12px;border-radius:6px">
+    <select id="challenge-plan" style="width:100%">
       <option value="4999">₹4,999 — ₹5,00,000 Account</option>
       <option value="9999">₹9,999 — ₹10,00,000 Account</option>
       <option value="14999">₹14,999 — ₹15,00,000 Account</option>
       <option value="24999">₹24,999 — ₹25,00,000 Account</option>
     </select>
-
-    <button id="select-challenge" style="
-      margin-top:15px;padding:12px 20px;background:#16a34a;
-      color:white;border:0;border-radius:6px">
-      Select Challenge
-    </button>
+    <button id="select-challenge" class="btn">Select Challenge</button>
+    <p id="challenge-message" class="status-note">Choose a challenge to continue.</p>
+    <p>Payment Status: <strong id="trader-payment">Pending</strong></p>
+    <p>Account Status: <strong id="trader-account-status">Inactive</strong></p>
   </div>
 
-  <div style="background:#172338;padding:20px;border-radius:12px;margin:15px 0">
-    <h3>Challenge Rules</h3>
-    <p>Profit Target: <strong>15%</strong></p>
-    <p>Maximum Drawdown: <strong>6%</strong></p>
-    <p>Daily Drawdown: <strong>3%</strong></p>
-    <p>Account Status: <strong id="challenge-status">Not Selected</strong></p>
-    <p id="challenge-message">Select a challenge to continue.</p>
-  </div>
-
-  <button id="trader-logout" style="
-    padding:12px 20px;background:#dc2626;color:white;
-    border:0;border-radius:6px">
-    Logout
-  </button>
+  <button id="open-admin" class="btn" style="display:none">Open Admin Panel</button>
+  <button id="trader-logout" class="btn" style="background:#dc2626;color:white">Logout</button>
+  <p id="trader-message" class="status-note" role="status"></p>
 </div>
 
-<!-- Login and Registration Modal -->
-<div id="auth-modal" style="
-  display:none;position:fixed;inset:0;background:rgba(0,0,0,0.8);
-  z-index:99999;justify-content:center;align-items:center;padding:20px">
+<!-- Admin panel -->
+<div id="admin-dashboard" class="overlay">
+  <h1>NPSDFunded — Admin</h1>
+  <p class="status-note">Registered users and account status management.</p>
+  <button id="admin-refresh" class="btn">Refresh Users</button>
+  <button id="admin-back" class="btn" style="background:#64748b;color:white">Back to Trader Dashboard</button>
+  <button id="admin-logout" class="btn" style="background:#dc2626;color:white">Logout</button>
+  <p id="admin-message" class="status-note" role="status"></p>
 
-  <div style="
-    background:#fff;color:#222;padding:25px;border-radius:12px;
-    width:100%;max-width:380px;box-sizing:border-box">
+  <div class="admin-table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Email</th>
+          <th>Registered</th>
+          <th>Payment</th>
+          <th>Account</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="admin-users">
+        <tr><td colspan="5">Loading users...</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="small">Paid status is a manual label, not payment verification. Activating a status does not create a real trading account.</p>
+</div>
 
+<!-- Authentication modal -->
+<div id="auth-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:100000;justify-content:center;align-items:center;padding:20px">
+  <div style="background:white;color:#222;padding:25px;border-radius:12px;width:100%;max-width:380px">
     <button id="auth-close" type="button" style="float:right">✕</button>
-
     <h2 id="auth-title">Login</h2>
-
     <form id="auth-form">
       <label for="auth-email">Email</label>
-      <input id="auth-email" type="email" placeholder="Enter your email"
-        autocomplete="email" required
-        style="width:100%;padding:12px;margin:8px 0 16px">
-
+      <input id="auth-email" type="email" autocomplete="email" required style="width:100%;margin:8px 0 16px">
       <label for="auth-password">Password</label>
-      <input id="auth-password" type="password" placeholder="Enter password"
-        autocomplete="current-password" minlength="6" required
-        style="width:100%;padding:12px;margin:8px 0 16px">
-
-      <button id="auth-submit" type="submit" style="
-        width:100%;padding:12px;background:#1769ff;color:white;
-        border:0;border-radius:6px">Login</button>
+      <input id="auth-password" type="password" autocomplete="current-password" minlength="6" required style="width:100%;margin:8px 0 16px">
+      <button id="auth-submit" type="submit" class="btn" style="width:100%;background:#1769ff;color:white">Login</button>
     </form>
-
-    <p id="auth-switch">
-      नया अकाउंट बनाना है?
-      <button type="button" id="auth-toggle">Register</button>
-    </p>
-
+    <p id="auth-switch">नया अकाउंट बनाना है? <button type="button" id="auth-toggle">Register</button></p>
     <p id="auth-message" role="status" aria-live="polite"></p>
   </div>
 </div>
 
 <script type="module">
-import { initializeApp }
-  from "https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js";
 
 import {
   getAuth,
@@ -263,6 +219,16 @@ import {
   onAuthStateChanged,
   signOut
 } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js";
+
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  setDoc,
+  collection,
+  getDocs,
+  updateDoc
+} from "https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBohD-bJaA7KzLgwhVoQ-ONrPX9iz3Tm-Q",
@@ -276,71 +242,88 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const db = getFirestore(app);
 
-const modal = document.getElementById("auth-modal");
-const form = document.getElementById("auth-form");
-const title = document.getElementById("auth-title");
-const submit = document.getElementById("auth-submit");
-const message = document.getElementById("auth-message");
-const toggle = document.getElementById("auth-toggle");
-const dashboard = document.getElementById("trader-dashboard");
+const $ = id => document.getElementById(id);
+const modal = $("auth-modal");
+const form = $("auth-form");
+const message = $("auth-message");
+const dashboard = $("trader-dashboard");
+const adminDashboard = $("admin-dashboard");
 
 let isRegister = false;
+let isAdmin = false;
+let chosenPlan = 4999;
+let currentProfile = null;
 
-function openAuth(register = false, planAmount = null) {
+const planAccounts = {
+  4999: 500000,
+  9999: 1000000,
+  14999: 1500000,
+  24999: 2500000
+};
+
+function openAuth(register = false, amount = null) {
   isRegister = register;
-
-  title.textContent = register ? "Create Account" : "Login";
-  submit.textContent = register ? "Register" : "Login";
-  toggle.textContent = register ? "Login" : "Register";
-
-  document.getElementById("auth-password").autocomplete =
-    register ? "new-password" : "current-password";
-
+  $("auth-title").textContent = register ? "Create Account" : "Login";
+  $("auth-submit").textContent = register ? "Register" : "Login";
+  $("auth-toggle").textContent = register ? "Login" : "Register";
+  $("auth-password").autocomplete = register ? "new-password" : "current-password";
   message.textContent = "";
   modal.style.display = "flex";
 
-  if (planAmount !== null) {
-    document.getElementById("challenge-plan").value = String(planAmount);
+  if (amount !== null && planAccounts[amount]) {
+    chosenPlan = amount;
+    $("challenge-plan").value = String(amount);
   }
 }
-
-// Make the function available to the buttons in the HTML.
 window.npsdOpenAuth = openAuth;
 
-document.getElementById("auth-close").addEventListener("click", () => {
-  modal.style.display = "none";
+$("auth-close").addEventListener("click", () => modal.style.display = "none");
+$("auth-toggle").addEventListener("click", () => openAuth(!isRegister));
+
+modal.addEventListener("click", e => {
+  if (e.target === modal) modal.style.display = "none";
 });
 
-toggle.addEventListener("click", () => {
-  openAuth(!isRegister);
-});
+async function ensureUserProfile(user) {
+  const ref = doc(db, "users", user.uid);
+  const snap = await getDoc(ref);
 
-modal.addEventListener("click", event => {
-  if (event.target === modal) {
-    modal.style.display = "none";
+  if (!snap.exists()) {
+    // Rules permit only email and createdAt when a user creates their own profile.
+    await setDoc(ref, {
+      email: user.email || "",
+      createdAt: new Date().toISOString()
+    });
   }
-});
 
-form.addEventListener("submit", async event => {
-  event.preventDefault();
+  const updatedSnap = await getDoc(ref);
+  return updatedSnap.data() || {};
+}
 
-  const email = document.getElementById("auth-email").value.trim();
-  const password = document.getElementById("auth-password").value;
+async function checkAdmin(user) {
+  const snap = await getDoc(doc(db, "admins", user.uid));
+  return snap.exists() && snap.data().role === "admin";
+}
 
-  submit.disabled = true;
+form.addEventListener("submit", async e => {
+  e.preventDefault();
+  const email = $("auth-email").value.trim();
+  const password = $("auth-password").value;
+  $("auth-submit").disabled = true;
   message.textContent = "Please wait...";
 
   try {
     if (isRegister) {
-      await createUserWithEmailAndPassword(auth, email, password);
+      const credential = await createUserWithEmailAndPassword(auth, email, password);
+      await ensureUserProfile(credential.user);
       message.textContent = "Account created successfully!";
     } else {
-      await signInWithEmailAndPassword(auth, email, password);
+      const credential = await signInWithEmailAndPassword(auth, email, password);
+      await ensureUserProfile(credential.user);
       message.textContent = "Login successful!";
     }
-
-    // Dashboard visibility is updated by onAuthStateChanged.
   } catch (error) {
     const errors = {
       "auth/email-already-in-use": "This email is already registered.",
@@ -348,66 +331,191 @@ form.addEventListener("submit", async event => {
       "auth/weak-password": "Password must be at least 6 characters.",
       "auth/invalid-credential": "Incorrect email or password.",
       "auth/too-many-requests": "Too many attempts. Please try later.",
-      "auth/network-request-failed": "Network error. Check your internet connection."
+      "auth/network-request-failed": "Network error. Check your internet connection.",
+      "permission-denied": "Firestore permission denied. Please check your Firestore Rules."
     };
-
-    message.textContent =
-      errors[error.code] || "Error: " + error.message;
+    message.textContent = errors[error.code] || error.message || "Something went wrong.";
   } finally {
-    submit.disabled = false;
+    $("auth-submit").disabled = false;
   }
 });
 
-onAuthStateChanged(auth, user => {
-  if (user) {
-    dashboard.style.display = "block";
-    modal.style.display = "none";
-    document.getElementById("trader-email").textContent = user.email || "";
-  } else {
+onAuthStateChanged(auth, async user => {
+  if (!user) {
     dashboard.style.display = "none";
-  }
-});
-
-document.getElementById("trader-logout").addEventListener("click", async () => {
-  try {
-    await signOut(auth);
-    modal.style.display = "none";
-    openAuth(false);
-  } catch (error) {
-    alert("Logout nahi ho paya. Dobara koshish karein.");
-  }
-});
-
-document.getElementById("select-challenge").addEventListener("click", () => {
-  const amount = Number(document.getElementById("challenge-plan").value);
-
-  const fundedAmounts = {
-    4999: 500000,
-    9999: 1000000,
-    14999: 1500000,
-    24999: 2500000
-  };
-
-  const fundedAmount = fundedAmounts[amount];
-
-  if (!fundedAmount) {
-    document.getElementById("challenge-message").textContent =
-      "Please select a valid challenge.";
+    adminDashboard.style.display = "none";
+    $("open-admin").style.display = "none";
+    isAdmin = false;
+    currentProfile = null;
     return;
   }
 
-  document.getElementById("challenge-status").textContent =
-    "Selected — ₹" + amount.toLocaleString("en-IN");
+  dashboard.style.display = "block";
+  modal.style.display = "none";
+  $("trader-email").textContent = user.email || "";
+  $("trader-message").textContent = "Loading account...";
 
-  document.getElementById("challenge-message").textContent =
-    "Selected plan: ₹" + amount.toLocaleString("en-IN") +
-    " | Account target: ₹" +
-    fundedAmount.toLocaleString("en-IN") +
-    ". Payment and account activation are not yet connected.";
+  try {
+    currentProfile = await ensureUserProfile(user);
+    isAdmin = await checkAdmin(user);
+    $("open-admin").style.display = isAdmin ? "inline-block" : "none";
+    $("trader-payment").textContent = currentProfile.paymentStatus || "Pending";
+    $("trader-account-status").textContent = currentProfile.accountStatus || "Inactive";
+    $("trader-message").textContent = isAdmin
+      ? "Admin access verified."
+      : "Login successful.";
+  } catch (error) {
+    $("trader-message").textContent =
+      "Account loaded, but Firestore access failed: " + error.message;
+  }
 });
 
-// Optional logout helper.
-window.npsdLogout = () => signOut(auth);
+$("select-challenge").addEventListener("click", () => {
+  const amount = Number($("challenge-plan").value);
+  const account = planAccounts[amount];
+
+  if (!account) {
+    $("challenge-message").textContent = "Please choose a valid plan.";
+    return;
+  }
+
+  chosenPlan = amount;
+  $("challenge-message").textContent =
+    "Selected plan: ₹" + amount.toLocaleString("en-IN") +
+    " | Account target: ₹" + account.toLocaleString("en-IN") +
+    ". This selection is not yet saved as an order. Payment and trading account activation are not connected.";
+});
+
+async function logout() {
+  try {
+    await signOut(auth);
+    adminDashboard.style.display = "none";
+    dashboard.style.display = "none";
+    openAuth(false);
+  } catch (error) {
+    alert("Logout failed. Please try again.");
+  }
+}
+
+$("trader-logout").addEventListener("click", logout);
+$("admin-logout").addEventListener("click", logout);
+
+$("open-admin").addEventListener("click", async () => {
+  if (!auth.currentUser || !isAdmin) {
+    alert("Admin access required.");
+    return;
+  }
+  dashboard.style.display = "none";
+  adminDashboard.style.display = "block";
+  await loadUsers();
+});
+
+$("admin-back").addEventListener("click", () => {
+  adminDashboard.style.display = "none";
+  dashboard.style.display = "block";
+});
+
+$("admin-refresh").addEventListener("click", loadUsers);
+
+async function loadUsers() {
+  const tbody = $("admin-users");
+  const adminMessage = $("admin-message");
+  tbody.replaceChildren();
+  adminMessage.textContent = "Loading registered users...";
+
+  try {
+    const user = auth.currentUser;
+    if (!user || !(await checkAdmin(user))) {
+      isAdmin = false;
+      throw new Error("Admin permission could not be verified.");
+    }
+
+    const snapshot = await getDocs(collection(db, "users"));
+
+    if (snapshot.empty) {
+      const row = tbody.insertRow();
+      const cell = row.insertCell();
+      cell.colSpan = 5;
+      cell.textContent = "No registered user profiles found yet.";
+      adminMessage.textContent = "0 users found.";
+      return;
+    }
+
+    for (const userDoc of snapshot.docs) {
+      const data = userDoc.data();
+      const row = tbody.insertRow();
+
+      const emailCell = row.insertCell();
+      emailCell.textContent = data.email || "(No email)";
+
+      const dateCell = row.insertCell();
+      dateCell.textContent = data.createdAt
+        ? String(data.createdAt).slice(0, 10)
+        : "—";
+
+      const paymentCell = row.insertCell();
+      const paymentSelect = document.createElement("select");
+      ["Pending", "Paid"].forEach(value => {
+        const option = document.createElement("option");
+        option.value = value;
+        option.textContent = value;
+        paymentSelect.appendChild(option);
+      });
+      paymentSelect.value = data.paymentStatus || "Pending";
+      paymentCell.appendChild(paymentSelect);
+
+      const accountCell = row.insertCell();
+      const accountSelect = document.createElement("select");
+      ["Inactive", "Active"].forEach(value => {
+        const option = document.createElement("option");
+        option.value = value;
+        option.textContent = value;
+        accountSelect.appendChild(option);
+      });
+      accountSelect.value = data.accountStatus || "Inactive";
+      accountCell.appendChild(accountSelect);
+
+      const actionCell = row.insertCell();
+      const saveButton = document.createElement("button");
+      saveButton.textContent = "Save";
+      saveButton.className = "btn";
+      saveButton.style.margin = "0";
+      actionCell.appendChild(saveButton);
+
+      saveButton.addEventListener("click", async () => {
+        saveButton.disabled = true;
+        adminMessage.textContent = "Saving status...";
+
+        try {
+          const currentUser = auth.currentUser;
+          if (!currentUser || !(await checkAdmin(currentUser))) {
+            throw new Error("Admin verification failed.");
+          }
+
+          await updateDoc(doc(db, "users", userDoc.id), {
+            paymentStatus: paymentSelect.value,
+            accountStatus: accountSelect.value
+          });
+
+          adminMessage.textContent = "Status saved for " + (data.email || "user") + ".";
+        } catch (error) {
+          adminMessage.textContent =
+            "Could not save. Check Firestore Rules: " + error.message;
+        } finally {
+          saveButton.disabled = false;
+        }
+      });
+    }
+
+    adminMessage.textContent = "Registered users loaded: " + snapshot.size;
+  } catch (error) {
+    adminMessage.textContent = "Could not load users: " + error.message;
+    const row = tbody.insertRow();
+    const cell = row.insertCell();
+    cell.colSpan = 5;
+    cell.textContent = "Loading failed. Check Firestore Rules and admin UID.";
+  }
+}
 </script>
 
 </body>
