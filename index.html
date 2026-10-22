@@ -284,7 +284,75 @@ footer{text-align:center;padding:25px;background:#111a30;color:#aab7ca}
       submit.disabled = false;
     }
   });
+<!-- NPSDFunded Trader Dashboard -->
+<div id="trader-dashboard" style="
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:99990;
+  background:#0b1220;
+  color:white;
+  padding:24px;
+  overflow:auto;
+  font-family:Arial,sans-serif;
+  box-sizing:border-box;
+">
+  <h1>NPSDFunded</h1>
+  <h2>Trader Dashboard</h2>
 
+  <p>Welcome, <span id="trader-email"></span></p>
+
+  <div style="
+    background:#172338;
+    padding:20px;
+    border-radius:12px;
+    margin:15px 0;
+  ">
+    <h3>Choose Your Challenge</h3>
+
+    <select id="challenge-plan" style="
+      width:100%;
+      padding:12px;
+      border-radius:6px;
+    ">
+      <option value="4999">₹4,999 — ₹5,00,000 Account</option>
+      <option value="9999">₹9,999 — ₹10,00,000 Account</option>
+      <option value="14999">₹14,999 — ₹15,00,000 Account</option>
+      <option value="24999">₹24,999 — ₹25,00,000 Account</option>
+    </select>
+
+    <button id="select-challenge" style="
+      margin-top:15px;
+      padding:12px 20px;
+      background:#16a34a;
+      color:white;
+      border:0;
+      border-radius:6px;
+    ">Select Challenge</button>
+  </div>
+
+  <div style="
+    background:#172338;
+    padding:20px;
+    border-radius:12px;
+    margin:15px 0;
+  ">
+    <h3>Challenge Rules</h3>
+    <p>Profit Target: <strong>15%</strong></p>
+    <p>Maximum Drawdown: <strong>6%</strong></p>
+    <p>Daily Drawdown: <strong>3%</strong></p>
+    <p>Account Status: <strong id="challenge-status">Not Selected</strong></p>
+    <p id="challenge-message">Select a challenge to continue.</p>
+  </div>
+
+  <button id="trader-logout" style="
+    padding:12px 20px;
+    background:#dc2626;
+    color:white;
+    border:0;
+    border-radius:6px;
+  ">Logout</button>
+</div>
   onAuthStateChanged(auth, user => {
     if (user) {
       console.log("Logged in:", user.email);
