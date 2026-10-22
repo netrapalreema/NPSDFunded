@@ -126,5 +126,172 @@ footer{text-align:center;padding:25px;background:#111a30;color:#aab7ca}
   </a>
 </div>
 <!-- End Login and Register Buttons -->
+  <!-- NPSDFunded Login and Registration -->
+<div id="auth-modal" style="
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.8);
+  z-index:99999;
+  justify-content:center;
+  align-items:center;
+  padding:20px;
+">
+  <div style="
+    background:#fff;
+    color:#222;
+    padding:25px;
+    border-radius:12px;
+    width:100%;
+    max-width:380px;
+    box-sizing:border-box;
+  ">
+    <button id="auth-close" style="float:right;">✕</button>
+
+    <h2 id="auth-title">Login</h2>
+
+    <form id="auth-form">
+      <label>Email</label>
+      <input id="auth-email" type="email"
+        placeholder="Enter your email"
+        required
+        style="width:100%;padding:12px;margin:8px 0 16px;box-sizing:border-box;">
+
+      <label>Password</label>
+      <input id="auth-password" type="password"
+        placeholder="Enter password"
+        minlength="6"
+        required
+        style="width:100%;padding:12px;margin:8px 0 16px;box-sizing:border-box;">
+
+      <button id="auth-submit" type="submit"
+        style="width:100%;padding:12px;background:#1769ff;color:white;border:0;border-radius:6px;">
+        Login
+      </button>
+    </form>
+
+    <p id="auth-switch">
+      नया अकाउंट बनाना है?
+      <button type="button" id="auth-toggle">Register</button>
+    </p>
+
+    <p id="auth-message" role="status"></p>
+  </div>
+</div>
+
+<script type="module">
+  import { initializeApp } from
+    "https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js";
+
+  import {
+    getAuth,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    onAuthStateChanged,
+    signOut
+  } from
+    "https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBohD-bJaA7KzLgwhVoQ-ONrPX9iz3Tm-Q",
+    authDomain: "npsdfunded.firebaseapp.com",
+    projectId: "npsdfunded",
+    storageBucket: "npsdfunded.firebasestorage.app",
+    messagingSenderId: "185115257686",
+    appId: "1:185115257686:web:1da1c32a9c59a3408084f7",
+    measurementId: "G-C9HPRMMNPP"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  const modal = document.getElementById("auth-modal");
+  const form = document.getElementById("auth-form");
+  const title = document.getElementById("auth-title");
+  const submit = document.getElementById("auth-submit");
+  const message = document.getElementById("auth-message");
+  const toggle = document.getElementById("auth-toggle");
+
+  let isRegister = false;
+
+  function openAuth(register = false) {
+    isRegister = register;
+    title.textContent = register ? "Create Account" : "Login";
+    submit.textContent = register ? "Register" : "Login";
+    toggle.textContent = register ? "Login" : "Register";
+    message.textContent = "";
+    modal.style.display = "flex";
+  }
+
+  document.getElementById("auth-close").onclick = () => {
+    modal.style.display = "none";
+  };
+
+  toggle.onclick = () => openAuth(!isRegister);
+
+  // Connect existing Login and Register buttons.
+  document.querySelectorAll("a, button").forEach(button => {
+    if (modal.contains(button)) return;
+
+    const label = button.textContent.trim().toLowerCase();
+
+    if (label === "login" || label === "log in" ||
+        label === "sign in") {
+      button.addEventListener("click", event => {
+        event.preventDefault();
+        openAuth(false);
+      });
+    }
+
+    if (label === "register" || label === "sign up" ||
+        label === "get started") {
+      button.addEventListener("click", event => {
+        event.preventDefault();
+        openAuth(true);
+      });
+    }
+  });
+
+  form.addEventListener("submit", async event => {
+    event.preventDefault();
+
+    const email = document.getElementById("auth-email").value.trim();
+    const password = document.getElementById("auth-password").value;
+
+    submit.disabled = true;
+    message.textContent = "Please wait...";
+
+    try {
+      if (isRegister) {
+        await createUserWithEmailAndPassword(auth, email, password);
+        message.textContent = "Account created successfully!";
+      } else {
+        await signInWithEmailAndPassword(auth, email, password);
+        message.textContent = "Login successful!";
+      }
+    } catch (error) {
+      const errors = {
+        "auth/email-already-in-use": "This email is already registered.",
+        "auth/invalid-email": "Please enter a valid email.",
+        "auth/weak-password": "Password must be at least 6 characters.",
+        "auth/invalid-credential": "Incorrect email or password.",
+        "auth/too-many-requests": "Too many attempts. Please try later."
+      };
+
+      message.textContent =
+        errors[error.code] || "Error: " + error.message;
+    } finally {
+      submit.disabled = false;
+    }
+  });
+
+  onAuthStateChanged(auth, user => {
+    if (user) {
+      console.log("Logged in:", user.email);
+    }
+  });
+
+  window.npsdLogout = () => signOut(auth);
+</script>
 </body>
 </html>
